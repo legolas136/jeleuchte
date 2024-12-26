@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html>
+	<script type="text/javascript" src="jscolor.js"></script>
+	<script type="text/javascript" src="code.js"></script>
+	<script type="text/javascript" src="FileSaver.js"></script>
+	<script>
+	</script>
+<head>
+	<title>%AP_SSID%</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="data:,">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<script>
+	if(window.mobileCheck() == 1)
+	{
+		
+	}
+	else {
+		
+	}
+	
+</script>
+
+ <body>
+	<script>
+		var opa = 0;
+		document.getElementById("body").style.filter="opacity(opa)";
+		// setInterval(funtion(){
+			
+		// });
+	</script>
+
+
+
+	<!-- Power Buttons-->
+	<p>
+		<button id="power_button" value="1" class="button" onclick="buttonPress(this)">ON</button></a>
+		<br>
+		<button id="power_button" value="0" class="button button2" onclick="buttonPress(this)">OFF</button></a>
+	</p>
+
+	<!-- Program Picker + Brightness Slider-->
+	<p>
+		<label for="brightness">General brightness</label>
+		<br>
+		<input type="range" class="slider" id="brightness" name="brightness" min="0" max="255" step="1"
+			oninput="updateSlider(this)">
+		<br>
+		<br>
+		<select class="sliderRainbow" id="program" name="program" onchange="programSubmit(this)">
+			<option value="">Choose Programm:</option>
+			<option value="1">1</option>
+			<option value="2">Blended rainbows</option>
+			<option value="3">Beat Reactive 1</option>
+			<option value="4">Beat Reactive 2</option>
+			<option value="5">Beat Reactive 3</option>
+			<option value="6">Static Color</option>
+			<option value="7">Running Lights</option>
+			<option value="8">RL - from center</option>
+			<option value="9">RL - to center</option>
+			<option value="10">RL - double</option>
+			<option value="11">BassMidTreble Beatreactive</option>
+			<option value="12">Gradient - static</option>
+			<option value="13">Gradient - BR</option>
+			<option value="14">BassMidTreble Beatreactive</option>
+			<option value="15">BassMidTreble Beatreactive</option>
+			<option value="16">BassMidTreble Beatreactive</option>
+			<option value="17">BassMidTreble Beatreactive</option>
+			<option value="18">BassMidTreble Beatreactive</option>
+			<option value="19">BassMidTreble Beatreactive</option>
+			<option value="20">BassMidTreble Beatreactive</option>
+		</select>
+
+	</p>
+
+	<!-- Color Picker-->
+	<p class="colorPicker">
+		<input class="none" id="colorInput"
+			data-jscolor="{width: window.innerWidth*0.9, height: 200, width: 400, position:'top', value:'rgb(%R_VALUE%, %G_VALUE%, %B_VALUE%)'}"
+			onInput="updateColor(this)" onChange="updateColor(this)" readonly>
+	</p>
+
+	<!-- Lichtorgel Settings-->
+	<details>
+	<summary>Lichtorgel settings</summary>
+	<table class="blueTable">
+		<!-- BR Mode -->
+		<tr>
+			<th colspan="3">
+				BR-Mode
+			</th>
+		</tr>
+		<tr>
+			<td>Enable / Speed</td>
+			<td>
+				<input type="checkbox" onchange="toggleCheckbox(this)" id="br_mode">
+			</td>
+			<td><input type="range" class="slider" id="brModeFallingSpeed" name="brModeFallingSpeed" min="0" max="5000"
+					step="1" oninput="updateSlider(this)"></td>
+		</tr>
+
+		<!-- Hues -->
+		<tr>
+			<th colspan="3">Hues</th>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				Color
+			</td>
+			<td>
+				Speed
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 150px;">Bass</td>
+			<td><input type="range" class="slider sliderRainbow" id="bassHue" name="bassHue" min="0" max="255" step="1"
+					oninput="updateSlider(this)"></td>
+			<td><input type="range" class="slider" id="bassFallingSpeed" name="bassFallingSpeed" min="0" max="5000"
+					step="1" oninput="updateSlider(this)"></td>
+		</tr>
+		<tr>
+			<td>Mid</td>
+			<td><input type="range" class="slider sliderRainbow" id="midHue" name="midHue" min="0" max="255" step="1"
+					oninput="updateSlider(this)"></td>
+			<td><input type="range" class="slider" id="midFallingSpeed" name="midFallingSpeed" min="0" max="5000"
+					step="1" oninput="updateSlider(this)"></td>
+		</tr>
+		<tr>
+			<td>Treble</td>
+			<td><input type="range" class="slider sliderRainbow" id="trebleHue" name="trebleHue" min="0" max="255"
+					step="1" oninput="updateSlider(this)"></td>
+			<td><input type="range" class="slider" id="trebleFallingSpeed" name="trebleFallingSpeed" min="0" max="5000"
+					step="1" oninput="updateSlider(this)"></td>
+		</tr>
+
+		<!-- Gradient Colors -->
+		<tr>
+			<th colspan="3">
+				Static Gradient Settings
+			</th>
+		</tr>
+		<tr>
+			<td>From Hue / Value</td>
+			<td>
+				<input type="range" class="slider sliderRainbow" id="gradient_color_1" name="gradient_color_1" min="0"
+					max="255" step="1" oninput="updateSlider(this)">
+			</td>
+			<td>
+				<input type="range" class="slider sliderTransparent" id="gradient_color_1_brightness"
+					name="gradient_color_1_brightness" min="1" max="255" step="1" oninput="updateSlider(this)">
+			</td>
+		</tr>
+		<tr>
+			<td>To Hue / Value</td>
+			<td>
+				<input type="range" class="slider sliderRainbow" id="gradient_color_2" name="gradient_color_2" min="0"
+					max="255" step="1" oninput="updateSlider(this)">
+			</td>
+			<td>
+				<input type="range" class="slider sliderTransparent" id="gradient_color_2_brightness"
+					name="gradient_color_2_brightness" min="1" max="255" step="1" oninput="updateSlider(this)">
+			</td>
+		</tr>
+		<!-- Running Lights -->
+		<tr>
+			<th colspan="100%">Running Lights</th>
+		</tr>
+		<tr>
+			<td>Speed</td>
+			<td colspan="2"><input type="range" class="slider" id="deltaMillis" name="deltaMillis" min="0" max="50"
+					step="1" oninput="updateSlider(this)"></td>
+		</tr>
+
+	</table>
+
+	<table class="blueTable">
+		<tr>
+			<th colspan="2">Value Manipulation</th>
+		</tr>
+		<tr>
+			<td style="width: 150px;">Zoom</td>
+			<td>
+				<input type="range" class="slider" class="bands_level_zoom_factor" id="bands_level_zoom_factor" name="0"
+					min="1" max="2" step="0.1" oninput="updateSlider(this)">
+			</td>
+		</tr>
+		<tr>
+			<td>Offset</td>
+			<td>
+				<input type="range" class="slider" class="bands_level_offset" id="bands_level_offset" name="0"
+					min="-100" max="100" step="1" oninput="updateSlider(this)">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<button id="reset_band_multiplicators" value="1" onclick="buttonPress(this)">Reset Band
+					Manipulation</button>
+			</td>
+		</tr>
+	</table>
+
+	</details>
+
+	<!-- General -->
+	<details>
+		<summary>General</summary>
+		<table class="blueTable">
+			<tr>
+				<th colspan="2">
+					Device Options
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<button id="reset" value="1" onclick="reset()">Reset Controller</button>
+				</td>
+				<td>
+					<button id="printDebug" value="1" onclick="printDebug(this)">Print Debug Information via
+						Serial</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button id="controlAutosave" value="1" onclick="buttonPress(this)">Autosave</button>
+				</td>
+				<td>
+					<button id="controlAutosave" value="0" onclick="buttonPress(this)">NoAutosave</button>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					System Settings
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<button id="enter_led_amount" value="1" onclick="enter_led_amount(this)">Enter Amount of
+						LEDs</button>
+				</td>
+				<td>
+					<button id="rf24_node_address" value="1" onclick="set_rf24_node_address(this)">Set RF24
+						Node Address</button>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					Firmware Updates
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<button id="enterUpdateServer" value="1" onclick="enterUpdateServer(this)">Enter Update
+						Server</button>
+				</td>
+				<td>
+					<button id="httpFwUpdate" value="1" onclick="buttonPress(this)">Firmware Update from
+						Server</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button id="enterSpiffsServer" value="1" onclick="enterSpiffsServer(this)">Enter Spiffs
+						Server</button>
+				</td>
+				<td>
+					<button id="httpSpiffsUpdate" value="1" onclick="buttonPress(this)">SPIFFS Update from
+						Server</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<button onclick="window.location.href = '/update';">Firmware/SPIFFS Upload</button>
+				</td>
+			</tr>
+		</table>
+
+	</details>
+
+	<!-- Config Management -->
+	<details>
+		<summary>Config Management</summary>
+
+		<table class="blueTable">
+			<tr>
+				<th colspan="4">Preferences</th>
+			</tr>
+			<!-- <tr>
+					<td>Wifi Credentials</td>
+					<td>
+						<button id="save_wifi_prefs" value="1" onclick="buttonPress(this)">Save</button>
+					</td>
+					<td>
+						<button id="load_wifi_prefs" value="1" onclick="buttonPress(this)">Load</button>
+					</td>
+					<td>
+						<button id="delete_wifi_prefs" value="1" onclick="eraseWifiPrefs(this)">Delete</button>
+					</td>
+				</tr>
+
+				<tr>
+					<td>Program Preferences</td>
+					<td>
+						<button id="save_program_prefs" value="1" onclick="buttonPress(this)">Save</button>
+					</td>
+					<td>
+						<button id="load_program_prefs" value="1" onclick="buttonPress(this)">Load</button>
+					</td>
+					<td>
+						<button id="delete_program_prefs" value="1" onclick="eraseConfig(this)">Delete</button>
+					</td>
+				</tr> -->
+			<tr>
+				<td>Preferences Struct</td>
+				<td>
+					<button id="prefsStructWrite" value="1" onclick="buttonPress(this)">Save</button>
+				</td>
+				<td>
+					<button id="prefsStructRead" value="1" onclick="buttonPress(this)">Load</button>
+				</td>
+				<td>
+					<button id="prefsStructClear" value="1" onclick="eraseConfig(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="4">.ini Files</th>
+			</tr>
+			<tr>
+				<td>wifi.ini</td>
+				<td>
+					<button id="write_wifi_ini" value="1" onclick="buttonPress(this)">Write</button>
+				</td>
+				<td>
+					<button id="read_wifi_ini" value="1" onclick="buttonPress(this)">Read</button>
+				</td>
+				<td>
+					<button value="1" onclick="forceDownload('/wifi_example.ini', 'wifi.ini')">Download example</button>
+					<!-- <input type="button" value="Download example"
+							onclick="forceDownload('/wifi_example.ini', 'wifi.ini')"> -->
+				</td>
+			</tr>
+			<tr>
+				<td>config.ini</td>
+				<td>
+					<button id="write_config_ini" value="1" onclick="buttonPress(this)">Write</button>
+				</td>
+				<td>
+					<button id="read_config_ini" value="1" onclick="buttonPress(this)">Read</button>
+				</td>
+				<td>
+					<button value="1" onclick="forceDownload('/config.ini', 'config.ini')">Download</button>
+					<!-- <input type="button" value="Download" onclick="forceDownload('/config.ini', 'config.ini')"> -->
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<button id="save_config" value="1" onclick="saveConfig()">Save/Write all</button>
+				</td>
+			</tr>
+			<tr>
+				<td>Upload .ini File</td>
+				<form method="POST" action="/upload" enctype="multipart/form-data">
+					<td colspan="2">
+						<input type="file" name="data" accept=".ini">
+					</td>
+					<td>
+						<button type="submit" name="upload" value="Upload!" title="Upload selected config file">Upload
+							selected config file</button>
+					</td>
+				</form>
+			</tr>
+		</table>
+
+	</details>
+
+	<!-- WiFi -->
+	<details>
+		<summary>WiFi</summary>
+
+		<table class="blueTable">
+
+			<tr>
+				<th colspan="3">WiFi Settings</th>
+			</tr>
+			<tr>
+				<td>
+					<button id="enter_wifi" value="1" onclick="enterWifi(this)">Enter Wifi
+						Credentials</button>
+				</td>
+				<td>
+					<button id="enter_hostname" value="1" onclick="enterHostname(this)">Enter
+						Hostname</button>
+				</td>
+				<td>
+					<button id="wifiScanAsync" value="1" onclick="buttonPress(this)">Scan WiFi
+						non-blocking</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<button onclick="window.location.href = '/portal.html';">Portal</button>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="3">AccessPoint</th>
+			</tr>
+			<tr>
+				<td>
+					<button id="enableAP" value="1" onclick="buttonPress(this)">Enable Access Point</button>
+				</td>
+				<td>
+					<button id="enableAP" value="0" onclick="buttonPress(this)">Disable Access
+						Point</button>
+				</td>
+				<td>
+					<button id="enter_AP" value="1" onclick="enterAP(this)">Enter AP Credentials</button>
+				</td>
+			</tr>
+		</table>
+
+	</details>
+
+	<!-- <details>
+		<summary>Multiplicators for bands</summary>
+		<p>
+
+			<label for="bands_multi0">63Hz</label>
+			<input type="range"  class="slider" class="bands_multi" id="bands_multi0" name="0" min="1" max="255" step="1"
+				oninput="updateSliderWClass(this)">
+
+		</p>
+		<p>
+			<label for="bands_multi1">160Hz</label>
+			<input type="range"  class="slider" class="bands_multi" id="bands_multi1" name="1" min="1" max="255" step="1"
+				oninput="updateSliderWClass(this)">
+		</p>
+
+		<p>
+			<label for="bands_multi2">400Hz</label>
+			<input type="range"  class="slider" class="bands_multi" id="bands_multi2" name="2" min="1" max="255" step="1"
+				oninput="updateSliderWClass(this)">
+		</p>
+
+		<p>
+			<label for="bands_multi3">1kHz</label>
+			<input type="range"  class="slider" class="bands_multi" id="bands_multi3" name="3" min="1" max="255" step="1"
+				oninput="updateSliderWClass(this)">
+		</p>
+
+		<p>
+			<label for="bands_multi4">2.5kHz</label>
+			<input type="range"  class="slider" class="bands_multi" id="bands_multi4" name="4" min="1" max="255" step="1"
+				oninput="updateSliderWClass(this)">
+		</p>
+
+		<p>
+			<label for="bands_multi5">6.25kHz</label>
+			<input type="range"  class="slider" class="bands_multi" id="bands_multi5" name="5" min="1" max="255" step="1"
+				oninput="updateSliderWClass(this)">
+		</p>
+
+		<p>
+			<label for="bands_multi6">16kHz</label>
+			<input type="range"  class="slider" class="bands_multi" id="bands_multi6" name="6" min="1" max="255" step="1"
+				oninput="updateSliderWClass(this)">
+		</p>
+	</details> -->
+
+	<br>
+	<!-- Debug Info-->
+	<details>
+		<table class="blueTable">
+			<tr>
+				<th colspan="4">Debug Info</th>
+			</tr>
+			<tr>
+				<td>AP</td>
+				<td>SSID<br>%AP_SSID%</td>
+				<td>IP<br>%AP_IP%</td>
+			</tr>
+			<tr>
+				<td>STA</td>
+				<td>SSID<br>%STA_SSID%</td>
+				<td>IP<br>%STA_IP%</td>
+				<td>Hostname<br>%WIFI_HOSTNAME%</td>
+			</tr>
+			<tr>
+				<td>nRF24L01<br>
+					<script>
+						if ("%RF24_CONNECTED%") { document.write("connected!"); } else { document.write("not connected!"); }
+					</script>
+					<br>Address: %RF24_NODE_ADDRESS%
+				</td>
+				<td>Channel<br>%RF24_CHANNEL%</td>
+				<td>Datarate<br>%RF24_DATA_RATE%</td>
+				<td>PA Level<br>%RF24_PA_LEVEL%</td>
+			</tr>
+			<tr>
+				<td colspan="2">FW Update Server<br>%UPDATE_SERVER%</td>
+				<td colspan="2">SPIFFS Update Server<br>%UPDATE_SERVER_SPIFFS%</td>
+			</tr>
+			<tr>
+				<td>
+					Autosave<br>
+					%AUTOSAVE_ENABLED%
+				</td>
+			</tr>
+		</table>
+		<summary>Debug Information</summary>
+
+		<!-- <script>
+				if ("%RF24_CONNECTED%") {
+					document.write("<p>nRF24L01 connected!");
+					document.write("<br>");
+					document.write("Config:");
+					document.write("<br>");
+					document.write("%RF24_DIAG%");
+				}
+				else {
+					document.write("<p>nRF24L01 not connected!</p>");
+				}
+			</script> -->
+
+	</details>
+
+	<!-- Config Editor -->
+	<details>
+		<summary>Config Editor</summary>
+
+		<input type="button" value="Get Current Config" onclick="getText()" />
+		<input type="button" value="Show Current Config" onclick="setText()" /><br>
+		<textarea id="textareabox" name="textarea1" rows="30" cols="50">
+
+		</textarea>
+
+
+	</details>
+
+	<script>
+		// set values and selected options to the actual values in program
+		function setSelectedIndex(s, i) {
+			s.options[i].selected = true;
+			return;
+		}
+		setSelectedIndex(document.getElementById("program"), "%PROGRAMM%");
+
+		function setBrCheckbox(s, i) {
+			// alert(i);
+			if (i == 0) {
+				s.checked = false;
+			}
+			if (i == 1) {
+				s.checked = true;
+			}
+
+			return;
+		}
+		setBrCheckbox(document.getElementById("br_mode"), "%BR_MODE%");
+
+		function setValue(s, i) {
+			s.value = i;
+			return;
+		}
+		setValue(document.getElementById("deltaMillis"), "%DELTAMILLIS%");
+		setValue(document.getElementById("brightness"), "%BRIGHTNESS%");
+		setValue(document.getElementById("gradient_color_1"), "%GRADIENT_COLOR_1%");
+		setValue(document.getElementById("gradient_color_1_brightness"), "%GRADIENT_COLOR_1_BRIGHTNESS%");
+		setValue(document.getElementById("gradient_color_2"), "%GRADIENT_COLOR_2%");
+		setValue(document.getElementById("gradient_color_2_brightness"), "%GRADIENT_COLOR_2_BRIGHTNESS%");
+
+		setValue(document.getElementById("bassHue"), "%BASSHUE%");
+		setValue(document.getElementById("midHue"), "%MIDHUE%");
+		setValue(document.getElementById("trebleHue"), "%TREBLEHUE%");
+		setValue(document.getElementById("brModeFallingSpeed"), "%BRMODEFALLINGSPEED%");
+		setValue(document.getElementById("bassFallingSpeed"), "%BASSFALLINGSPEED%");
+		setValue(document.getElementById("midFallingSpeed"), "%MIDFALLINGSPEED%");
+		setValue(document.getElementById("trebleFallingSpeed"), "%TREBLEFALLINGSPEED%");
+
+		setValue(document.getElementById("bands_level_zoom_factor"), "%BANDSLEVELZOOMFACTOR%");
+		setValue(document.getElementById("bands_level_offset"), "%BANDSLEVELOFFSET%");
+
+		refreshColorpicker();
+
+	</script>
+
+</body>
+
+</html>
